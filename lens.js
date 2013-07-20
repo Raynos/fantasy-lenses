@@ -1,8 +1,5 @@
-var daggy = require('daggy'),
-    Option = require('fantasy-options'),
-    Store = require('fantasy-stores'),
-    Lens = daggy.tagged('run'),
-    PartialLens = daggy.tagged('run');
+var Option = require('fantasy-options'),
+    Store = require('fantasy-stores');
 
 function identity(a) {
     return a;
@@ -15,6 +12,14 @@ function compose(f, g) {
 
 function thisAndThen(b) {
     return b.compose(this);
+}
+
+function Lens(run) {
+    if (!(this instanceof Lens)) {
+        return new Lens(run)
+    }
+
+    this.run = run
 }
 
 // Methods
@@ -78,6 +83,14 @@ Lens.arrayLens = function(index) {
         );
     });
 };
+
+function PartialLens(run) {
+    if (!(this instanceof PartialLens)) {
+        return new PartialLens(run)
+    }
+
+    this.run = run
+}
 
 PartialLens.id = function() {
     return PartialLens(function(target) {
